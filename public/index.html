@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>Device Simulator</title>
+<style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+    }
+  
+    .container {
+      background-color: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+  
+    .panel {
+      border-radius: 50%;
+      background-color: #e6e6e6;
+      width: 300px;
+      height: 300px;
+      position: relative;
+      margin: 20px auto;
+    }
+  
+    .panel-inner {
+      position: absolute;
+      width: 80%;
+      height: 80%;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.1);
+    }
+  
+    h1, select, button, p {
+      margin-top: 10px;
+      display: block;
+      width: 100%;
+    }
+  
+    select, button {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      margin: auto;
+      width: 90%; /* Adjust width as needed */
+    }
+  
+    button {
+      background-color: #1a73e8;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+    }
+  
+    button:hover {
+      background-color: #1669c7;
+    }
+  
+    #temperatureDisplay, #spinSpeedDisplay {
+      font-weight: bold;
+    }
+  
+    .controls {
+      margin-top: 30px;
+    }
+  </style>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="container">
+      <div class="panel">
+        <div class="panel-inner"></div>
+      </div>
+      <div class="controls">
+        <h1>Washing Machine Simulator</h1>
+        
+        <label for="programSelector">Choose a program:</label>
+        <select id="programSelector" onchange="updateDetails()">
+          <option value="">--Select a Program--</option>
+          <!-- Options will be populated here by JavaScript -->
+        </select>
+        
+        <p>Temperature: <span id="temperatureDisplay">--</span></p>
+        <p>Spin Speed: <span id="spinSpeedDisplay">--</span></p>
+        
+        <button id="startButton">Start</button>
+      </div>
+    </div>
+
+  <script>
+    let programs = [];
+    // Fetch programs from the backend and populate the dropdown
+    window.onload = async function() {
+      try {
+        const response = await axios.get('/energymanagement/simulator/program');
+        programs = response.data;
+        const selector = document.getElementById('programSelector');
+        
+        programs.forEach(program => {
+          const option = document.createElement('option');
+          option.value = program.programId;
+          option.textContent = program.programName;
+          selector.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error fetching programs:', error);
+      }
+    };
+
+    // Update temperature and spin speed display when a program is selected
+    function updateDetails() {
+      const selectedProgramId = document.getElementById('programSelector').value;
+      const selectedProgram = programs.find(program => program.programId.toString() === selectedProgramId);
+      if (selectedProgram) {
+      document.getElementById('temperatureDisplay').textContent = selectedProgram.temperature;
+      document.getElementById('spinSpeedDisplay').textContent = selectedProgram.spinSpeed;
+    } else {
+      document.getElementById('temperatureDisplay').textContent = '--';
+      document.getElementById('spinSpeedDisplay').textContent = '--';
+    }
+    }
+    
+    // Attach an event listener to the start button
+    document.getElementById('startButton').onclick = async function() {
+        const selectedProgramId = document.getElementById('programSelector').value;
+        if (selectedProgramId) {
+            const selectedProgram = programs.find(program => program.programId.toString() === selectedProgramId);
+            
+            if (!selectedProgram) {
+            alert('Selected program data is not available.');
+            return;
+            }
+
+            // Prepare the data object to send to the server
+            const postData = {
+            programId: parseInt(selectedProgramId, 10) // Parse the programId to ensure it is an integer
+            };
+
+            try {
+            // Send the POST request to the backend calculate endpoint
+            const result = await axios.post('/energymanagement/simulator/calculate', postData);
+            alert('Calculation started and session added!');
+            console.log('Server response:', result.data);
+            } catch (error) {
+            console.error('Error starting calculation:', error);
+            alert('Error starting calculation: ' + error.message);
+            }
+        } else {
+            alert('Please select a program.');
+        }
+    };
+  </script>
+</body>
+</html>
