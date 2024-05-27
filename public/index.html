@@ -102,68 +102,70 @@
       </div>
     </div>
 
-  <script>
-    let programs = [];
-    // Fetch programs from the backend and populate the dropdown
-    window.onload = async function() {
-      try {
-        const response = await axios.get('/energymanagement/simulator/program');
-        programs = response.data;
-        const selector = document.getElementById('programSelector');
-        
-        programs.forEach(program => {
-          const option = document.createElement('option');
-          option.value = program.programId;
-          option.textContent = program.programName;
-          selector.appendChild(option);
-        });
-      } catch (error) {
-        console.error('Error fetching programs:', error);
-      }
-    };
-
-    // Update temperature and spin speed display when a program is selected
-    function updateDetails() {
-      const selectedProgramId = document.getElementById('programSelector').value;
-      const selectedProgram = programs.find(program => program.programId.toString() === selectedProgramId);
-      if (selectedProgram) {
-      document.getElementById('temperatureDisplay').textContent = selectedProgram.temperature;
-      document.getElementById('spinSpeedDisplay').textContent = selectedProgram.spinSpeed;
-    } else {
-      document.getElementById('temperatureDisplay').textContent = '--';
-      document.getElementById('spinSpeedDisplay').textContent = '--';
-    }
-    }
-    
-    // Attach an event listener to the start button
-    document.getElementById('startButton').onclick = async function() {
-        const selectedProgramId = document.getElementById('programSelector').value;
-        if (selectedProgramId) {
-            const selectedProgram = programs.find(program => program.programId.toString() === selectedProgramId);
-            
-            if (!selectedProgram) {
-            alert('Selected program data is not available.');
-            return;
-            }
-
-            // Prepare the data object to send to the server
-            const postData = {
-            programId: parseInt(selectedProgramId, 10) // Parse the programId to ensure it is an integer
-            };
-
-            try {
-            // Send the POST request to the backend calculate endpoint
-            const result = await axios.post('/energymanagement/simulator/calculate', postData);
-            alert('Calculation started and session added!');
-            console.log('Server response:', result.data);
-            } catch (error) {
-            console.error('Error starting calculation:', error);
-            alert('Error starting calculation: ' + error.message);
-            }
-        } else {
-            alert('Please select a program.');
+    <script>
+      let programs = [];
+      // Fetch programs from the backend and populate the dropdown
+      window.onload = async function() {
+        try {
+          console.log("Fetching programs...");
+          const response = await axios.get('/energymanagement/simulator/program');
+          console.log("Response received:", response.data);
+          programs = response.data;
+          const selector = document.getElementById('programSelector');
+          
+          programs.forEach(program => {
+            const option = document.createElement('option');
+            option.value = program.programId;
+            option.textContent = program.programName;
+            selector.appendChild(option);
+          });
+        } catch (error) {
+          console.error('Error fetching programs:', error);
         }
-    };
-  </script>
+      };
+    
+      // Update temperature and spin speed display when a program is selected
+      function updateDetails() {
+        const selectedProgramId = document.getElementById('programSelector').value;
+        const selectedProgram = programs.find(program => program.programId.toString() === selectedProgramId);
+        if (selectedProgram) {
+          document.getElementById('temperatureDisplay').textContent = selectedProgram.temperature;
+          document.getElementById('spinSpeedDisplay').textContent = selectedProgram.spinSpeed;
+        } else {
+          document.getElementById('temperatureDisplay').textContent = '--';
+          document.getElementById('spinSpeedDisplay').textContent = '--';
+        }
+      }
+        
+      // Attach an event listener to the start button
+      document.getElementById('startButton').onclick = async function() {
+          const selectedProgramId = document.getElementById('programSelector').value;
+          if (selectedProgramId) {
+              const selectedProgram = programs.find(program => program.programId.toString() === selectedProgramId);
+              
+              if (!selectedProgram) {
+              alert('Selected program data is not available.');
+              return;
+              }
+    
+              // Prepare the data object to send to the server
+              const postData = {
+              programId: parseInt(selectedProgramId, 10) // Parse the programId to ensure it is an integer
+              };
+    
+              try {
+              // Send the POST request to the backend calculate endpoint
+              const result = await axios.post('/energymanagement/simulator/calculate', postData);
+              alert('Calculation started and session added!');
+              console.log('Server response:', result.data);
+              } catch (error) {
+              console.error('Error starting calculation:', error);
+              alert('Error starting calculation: ' + error.message);
+              }
+          } else {
+              alert('Please select a program.');
+          }
+      };
+    </script>
 </body>
 </html>

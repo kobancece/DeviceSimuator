@@ -29,8 +29,10 @@ router.post('/simulator/program', async (req, res) => {
 router.get('/simulator/program', async (req, res) => {
   try {
     const [programs, _] = await db.query('SELECT * FROM wmPrograms');
+    console.log("Fetched programs:", programs);
     res.status(200).json(programs);
   } catch (error) {
+    console.error('Error retrieving programs:', error);
     res.status(500).json({ message: 'Error retrieving programs', error: error.message });
   }
 });
