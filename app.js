@@ -11,8 +11,6 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve static files f
 // Use your routers here
 app.use('/energymanagement', wmProgramRouter);
 
-// Your other app setup, like error handling
-
 // Serve the HTML page for the root route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

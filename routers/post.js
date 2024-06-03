@@ -91,41 +91,4 @@ router.post('/simulator/program/update/:programId', async (req, res) => {
   }
 });
 
-router.post('/simulator/calculate', async (req, res) => {
-  // Extract the programId from the request body
-  const { programId } = req.body;
-
-  try {
-    // Fetch the program details from the wmPrograms table using the programId
-    const [programs] = await db.query('SELECT * FROM wmPrograms WHERE programId = ?', [programId]);
-    
-    if (programs.length === 0) {
-      return res.status(404).send({ message: 'Program not found' });
-    }
-    
-    const programData = programs[0];
-
-    // Generate a random userId for the sake of this example
-    const userId = Math.floor(Math.random() * 10000) + 1;
-
-    // Calculate the electric consumption and total cost
-    const durationInHours = programData.duration / 60;
-    const electricConsumption = programData.electricConsumption * durationInHours; // As it's for 60 mins, adjust if needed
-    const totalCost = electricConsumption * 0.82; // Assuming the cost rate is $0.82 per kWh
-
-    // Insert the new wash session into the washsessions table
-    const [insertResult] = await db.execute(
-      'INSERT INTO washsessions (userId, programId, washTimestamp, electricConsumption, waterConsumption, totalCost, duration) VALUES (?, ?, NOW(), ?, ?, ?, ?)', 
-      [1, programId, electricConsumption, programData.waterConsumption, totalCost, programData.duration]
-    );
-    
-    // Send back a success response with the sessionId
-    res.status(201).send({ message: 'Wash session calculated and added', sessionId: insertResult.insertId });
-  } catch (error) {
-    // If there's an error, send back an error response
-    console.error('Error calculating wash session:', error);
-    res.status(500).send({ message: 'Error calculating wash session', error: error.message });
-  }
-});
-
 module.exports = router;
