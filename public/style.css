@@ -5,7 +5,8 @@ body, html {
   justify-content: center;
   align-items: center;
   font-family: Arial, sans-serif;
-  background-color: #f7f7f7;
+  background-color: #d4edda;
+  font-weight: bold;
 }
 
 .container {
@@ -14,7 +15,7 @@ body, html {
   padding: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 400px; /* Adjust width for larger input area */
+  width: 500px; 
 }
 
 .panel {
@@ -38,10 +39,15 @@ body, html {
   box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2, select, button, p, label {
+h1, select, button, p, label {
   margin-top: 10px;
   display: block;
   width: 100%;
+}
+
+h2.title {
+  color: #437c74;
+  margin-top: 20px;
 }
 
 select, input, button {
@@ -50,19 +56,28 @@ select, input, button {
   border: 1px solid #ddd;
   margin: auto;
   width: 90%;
-  font-size: 1em; /* Increase font size for better readability */
+  font-size: 1em;
 }
 
-button {
-  background-color: #1a73e8;
+input.form-input {
+  background-color: #d4edda;
+}
+
+button.login-button {
+  background-color: #49c8a9;
   color: white;
-  font-size: 1.1em; /* Increase font size for buttons */
+  font-size: 1.1em;
   cursor: pointer;
   border: none;
+  font-weight: bold;
 }
 
-button:hover {
-  background-color: #1669c7;
+button.login-button:hover {
+  background-color: #437c74;
+}
+
+.form-label {
+  color: #437c74;
 }
 
 #temperatureDisplay, #spinSpeedDisplay {
@@ -79,4 +94,9 @@ button:hover {
 
 #error {
   color: red;
+}
+
+.logo {
+  width: 200px;
+  margin-bottom: 20px;
 }

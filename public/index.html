@@ -10,17 +10,20 @@
 </head>
 <body>
     <div class="container" id="loginContainer">
-        <h2>Login</h2>
+        <img src="image.png" alt="Logo" class="logo">
+        <h2 class="title">Login into device simulator</h2>
         <form id="loginForm">
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" id="email" name="email" class="form-input" required>
             </div>
+            <br />
             <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" id="password" name="password" class="form-input" required>
             </div>
-            <button type="submit">Login</button>
+            <br />
+            <button type="submit" class="login-button">Log in</button>
         </form>
         <p id="loginMessage"></p>
     </div>
@@ -48,7 +51,6 @@
         let programs = [];
         let currentUserId = null;
 
-        // Login form submission
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
@@ -56,7 +58,6 @@
 
             try {
                 const response = await axios.post('/energymanagement/simulator/login', { email, password });
-                console.log('response: '+JSON.stringify(response))
                 if (response.data.success) {
                     currentUserId = response.data.userId;
                     document.getElementById('loginContainer').style.display = 'none';
@@ -71,12 +72,9 @@
             }
         });
 
-        // Fetch programs from the backend and populate the dropdown
         async function fetchPrograms() {
             try {
-                console.log("Fetching programs...");
                 const response = await axios.get('/energymanagement/simulator/program');
-                console.log("Response received:", response.data);
                 programs = response.data;
                 const selector = document.getElementById('programSelector');
                 
@@ -91,7 +89,6 @@
             }
         }
 
-        // Update temperature and spin speed display when a program is selected
         function updateDetails() {
             const selectedProgramId = document.getElementById('programSelector').value;
             const selectedProgram = programs.find(program => program.programId.toString() === selectedProgramId);
@@ -103,10 +100,9 @@
                 document.getElementById('spinSpeedDisplay').textContent = '--';
             }
         }
-        
-        // Attach an event listener to the start button
+
         document.addEventListener('DOMContentLoaded', function () {
-            const mqttClient = mqtt.connect('ws://test.mosquitto.org:8081'); // WebSocket URL
+            const mqttClient = mqtt.connect('ws://test.mosquitto.org:8081');
 
             mqttClient.on('connect', function () {
                 console.log('Connected to MQTT broker');
