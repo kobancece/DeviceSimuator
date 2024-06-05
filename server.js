@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const app = require('./app');
 const mqtt = require('mqtt');
 const db = require('./models/db');
@@ -26,22 +28,24 @@ mqttClient.on('message', async (topic, message) => {
       const data = JSON.parse(message.toString());
       console.log('Parsed data:', data);
       
-      const { programName, temperature, spinSpeed, electricConsumption, waterConsumption, duration } = data;
+      const { userId, programId, temperature, spinSpeed, electricConsumption, waterConsumption, duration } = data;
 
-      if (!programName || temperature === undefined || spinSpeed === undefined || electricConsumption === undefined || waterConsumption === undefined || duration === undefined) {
+      if (!userId || !programId || temperature === undefined || spinSpeed === undefined || electricConsumption === undefined || waterConsumption === undefined || duration === undefined) {
         console.error('Missing fields in the message');
         return;
       }
 
+      // Log the userId before inserting
+      console.log(`Inserting wash session with userId: ${userId}, programId: ${programId}`);
+
       // Insert the new wash session into the washsessions table
-      const userId = 1; // Example userId, you might want to generate or fetch this dynamically
       const durationInHours = duration / 60;
       const totalElectricConsumption = electricConsumption * durationInHours;
       const totalCost = totalElectricConsumption * 0.82; // Assuming the cost rate is $0.82 per kWh
 
       const [insertResult] = await db.execute(
         'INSERT INTO washsessions (userId, programId, washTimestamp, electricConsumption, waterConsumption, totalCost, duration) VALUES (?, ?, NOW(), ?, ?, ?, ?)', 
-        [userId, 1, totalElectricConsumption, waterConsumption, totalCost, duration] // Replace 1 with the actual programId if necessary
+        [userId, programId, totalElectricConsumption, waterConsumption, totalCost, duration]
       );
 
       console.log('Wash session added successfully', insertResult.insertId);

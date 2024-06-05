@@ -1,72 +1,82 @@
 body, html {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-  }
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+}
 
-  .container {
-    background-color: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
+.container {
+  background-color: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 400px; /* Adjust width for larger input area */
+}
 
-  .panel {
-    border-radius: 50%;
-    background-color: #e6e6e6;
-    width: 300px;
-    height: 300px;
-    position: relative;
-    margin: 20px auto;
-  }
+.panel {
+  border-radius: 50%;
+  background-color: #e6e6e6;
+  width: 300px;
+  height: 300px;
+  position: relative;
+  margin: 20px auto;
+}
 
-  .panel-inner {
-    position: absolute;
-    width: 80%;
-    height: 80%;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.1);
-  }
+.panel-inner {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
 
-  h1, select, button, p {
-    margin-top: 10px;
-    display: block;
-    width: 100%;
-  }
+h1, h2, select, button, p, label {
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+}
 
-  select, button {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin: auto;
-    width: 90%; /* Adjust width as needed */
-  }
+select, input, button {
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin: auto;
+  width: 90%;
+  font-size: 1em; /* Increase font size for better readability */
+}
 
-  button {
-    background-color: #1a73e8;
-    color: white;
-    font-size: 1em;
-    cursor: pointer;
-    border: none;
-  }
+button {
+  background-color: #1a73e8;
+  color: white;
+  font-size: 1.1em; /* Increase font size for buttons */
+  cursor: pointer;
+  border: none;
+}
 
-  button:hover {
-    background-color: #1669c7;
-  }
+button:hover {
+  background-color: #1669c7;
+}
 
-  #temperatureDisplay, #spinSpeedDisplay {
-    font-weight: bold;
-  }
+#temperatureDisplay, #spinSpeedDisplay {
+  font-weight: bold;
+}
 
-  .controls {
-    margin-top: 30px;
-  }
+.controls {
+  margin-top: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+#error {
+  color: red;
+}
