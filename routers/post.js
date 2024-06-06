@@ -4,7 +4,7 @@ const db = require('../models/db');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 
-// Kullanıcı Giriş İşlemi
+// User Login Process
 router.post('/simulator/login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -104,7 +104,6 @@ router.post('/simulator/program/update/:programId', async (req, res) => {
     const { programName, temperature, spinSpeed, electricConsumption, waterConsumption, duration } = req.body;
     const programId = req.params.programId;
 
-    // Basic validation to ensure required fields are provided
     if (!programName || temperature === undefined || spinSpeed === undefined || electricConsumption === undefined || waterConsumption === undefined || duration === undefined) {
         return res.status(400).send({ message: 'Missing fields' });
     }

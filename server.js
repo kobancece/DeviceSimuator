@@ -5,7 +5,7 @@ const mqtt = require('mqtt');
 const db = require('./models/db');
 
 const PORT = process.env.PORT || 3000;
-const MQTT_BROKER_URL = 'mqtt://test.mosquitto.org'; // Replace with your MQTT broker URL
+const MQTT_BROKER_URL = 'mqtt://test.mosquitto.org';
 
 const mqttClient = mqtt.connect(MQTT_BROKER_URL);
 

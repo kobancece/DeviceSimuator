@@ -2,15 +2,14 @@ require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path'); // Add this line to use the path module
+const path = require('path');
 const wmProgramRouter = require('./routers/post');
 
 const app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from 'public'
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Use your routers here
 app.use('/energymanagement', wmProgramRouter);
 
 // Serve the HTML page for the root route
